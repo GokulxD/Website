@@ -25,10 +25,13 @@
     document.addEventListener('DOMContentLoaded', function() {
       const lettersContainer = document.getElementById('letters');
       const wordsToShow = ['Poda', 'Junni'];
+      let isSwiping = false;
 
       document.addEventListener('touchstart', function(event) {
         const isTouching = event.touches.length > 0;
-        if (isTouching) {
+        if (isTouching && !isSwiping) {
+          isSwiping = true;
+
           const randomWord = wordsToShow[Math.floor(Math.random() * wordsToShow.length)];
 
           for (let i = 0; i < randomWord.length; i++) {
@@ -41,7 +44,6 @@
             letterElement.style.position = 'absolute';
             letterElement.style.left = x + 'px';
             letterElement.style.top = y + 'px';
-            letterElement.style.color = 'white'; // Set color to white
 
             lettersContainer.appendChild(letterElement);
 
@@ -50,6 +52,11 @@
             }, 1000 + i * 100);
           }
 
+          setTimeout(() => {
+            isSwiping = false;
+            lettersContainer.innerHTML = ''; // Clear the container for the next word
+          }, 2000); // Clear after 2 seconds
+          
           // Prevent default behavior to avoid scrolling on swipe
           event.preventDefault();
         }
@@ -58,3 +65,4 @@
   </script>
 </body>
 </html>
+
